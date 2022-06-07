@@ -14,22 +14,37 @@ end
 class CodeGuess
   attr_accessor :code_guess
 
-  def initialize(color1, color2, color3, color4)
-    @code_guess = [color1, color2, color3, color4]
+  def initialize
+    puts 'What do you think the code is? List four colors from the following: red, blue, yellow, green, purple, orange.'
+    @code_guess = gets.chomp.downcase.split(', ')
   end
 end
 
-# Method to ask what four colors in the code the user would like
-def ask_guess
-  puts 'What do you think the code is? List four colors from the following: red, blue, yellow, green, purple, orange.'
-  user_guess = gets.chomp.downcase.split(', ')
-  puts "OK, you think the code is #{user_guess}. Let's see!"
+class NewGame
+  attr_accessor :secret_code, :code_guess
+
+  def initialize
+    @secret_code = Code.new
+    puts "The secret code is #{@secret_code.secret_code}."
+    @code_guess = CodeGuess.new
+    puts "OK, you guessed that secret code is #{@code_guess.code_guess}."
+  end
+
+  # Method to compare arrays and return color hints. Need work
+  def compare_arrays(array1, array2)
+    hint = []
+    x = 0
+    while x < array2.length do
+      if array1[x] == array2[x]
+        hint.push('black')
+        x += 1
+      elsif array2.include?[array1[x]]
+        hint.push('grey')
+        x += 1
+      else hint.push('white')
+        x += 1
+      end
+    end
+  end
 end
-
-game = Code.new
-puts game.secret_code
-
-guess_one = CodeGuess.new('red', 'green', 'blue', 'yellow')
-puts guess_one.code_guess
-
-ask_guess
+run_game = NewGame.new
